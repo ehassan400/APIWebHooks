@@ -32,7 +32,7 @@ def api_all():
 def api_create_contact():
     record = json.loads(request.data)
     contacts.append(record)
-    notify('oncreate', request.data)
+    notify('oncreate', jsonify(contacts[-1]))
     return jsonify(contacts)
 
 @app.route('/api/v1/org/1684/contacts', methods=['PATCH'])
@@ -54,14 +54,18 @@ def api_delete_contact():
 @app.route('/api/v1/org/1684/contacts/webhook', methods=['POST'])
 def subscribe_webhooks():
     record = json.loads(request.data)
+    listener_url = record.get('listener_url')
     if record['action'] == 'oncreate':
-        createsubscribers_list.append(record['listener_url'])
+        createsubscribers_list.append(listener_url)
+        r = requests.post(listener_url, json="subscribed to oncreate actions")
         return jsonify(createsubscribers_list)
     if record['action'] == 'onupdate':
-        update_subscribers_list.append(record['listener_url'])
+        update_subscribers_list.append(listener_url)
+        r = requests.post(listener_url, json="subscribed to onupdate actions")
         return jsonify(update_subscribers_list)
     if record['action'] == 'ondelete':
-        deletesubscribers_list.append(record['listener_url'])
+        deletesubscribers_list.append(listener_url)
+        r = requests.post(listener_url, json="subscribed to ondelete actions")
         return jsonify(deletesubscribers_list)
     else:
         return jsonify(None)
@@ -76,7 +80,7 @@ def notify(action, data):
         listeners = deletesubscribers_list
     
     for listener in listeners:
-        r = requests.post(listener, data)
+        r = requests.post(listener, json=data)
 
 @app.route('/api/v1/org/1684/contacts/webhookTest', methods=['POST'])
 def test_hooks():
