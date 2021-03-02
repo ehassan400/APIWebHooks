@@ -1,0 +1,21 @@
+<p>Contacts list</p>
+
+
+<div class="row">
+    <div class="col-sm-4">Name</div>
+    <div class="col-sm-6">Email</div>
+    <div class="col-sm-2">Action</div>
+</div>
+<div *ngFor="let contact of contactsList">
+    <div class="row">
+        <div class="col-sm-4">{{contact.name}}</div>
+        <div class="col-sm-6">{{contact.email}}</div>
+        <div class="col-sm-2">edit/delete</div>
+    </div>
+</div>
+
+<br/>
+<br/>
+<br/>
+
+

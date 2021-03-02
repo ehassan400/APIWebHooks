@@ -1,9 +1,11 @@
 import flask
 import json
 from flask import request, jsonify
+from flask_cors import CORS
 import requests
 
 app = flask.Flask(__name__)
+CORS(app)
 app.config["DEBUG"] = True
 
 # Create some test data for our catalog in the form of a list of dictionaries.
