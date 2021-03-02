@@ -30,25 +30,30 @@ def api_all():
 
 @app.route('/api/v1/org/1684/contacts', methods=['POST'])
 def api_create_contact():
-    record = json.loads(request.data)
+    record = request.json
     contacts.append(record)
-    notify('oncreate', jsonify(contacts[-1]))
+    notify('oncreate', contacts[-1])
     return jsonify(contacts)
 
 @app.route('/api/v1/org/1684/contacts', methods=['PATCH'])
 def api_update_contact():
-    record = json.loads(request.data)
+    record = request.json
+    print(record['email'])
     for contact in contacts:
+        print(contact['email'])
         if contact['email'] == record['email']:
-            contact['name'] = record['name']
-    notify('onupdate', request.data)
+            print("hit")
+            contact = record
+            notify('onupdate', contact)
     return jsonify(contacts)
 
 @app.route('/api/v1/org/1684/contacts', methods=['DELETE'])
 def api_delete_contact():
-    record = json.loads(request.data)
-    contacts.remove(record)
-    notify('ondelete', request.data)
+    record = request.json
+    for contact in contacts:
+        if contact['email'] == record['email']:
+            contacts.remove(contact)
+            notify('ondelete', record)
     return jsonify(contacts)
 
 @app.route('/api/v1/org/1684/contacts/webhook', methods=['POST'])
@@ -72,6 +77,8 @@ def subscribe_webhooks():
 
 def notify(action, data):
     listeners = []
+    webhook_data = dict(action=action)
+    webhook_data["data"] = data
     if action == 'oncreate':
         listeners = createsubscribers_list
     if action == 'onupdate':
@@ -80,7 +87,7 @@ def notify(action, data):
         listeners = deletesubscribers_list
     
     for listener in listeners:
-        r = requests.post(listener, json=data)
+        r = requests.post(listener, json=webhook_data)
 
 @app.route('/api/v1/org/1684/contacts/webhookTest', methods=['POST'])
 def test_hooks():
