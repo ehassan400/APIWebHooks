@@ -14,9 +14,13 @@ export class HomeComponent implements OnInit {
   constructor(private http: HttpClient, private notifierService: NotifierService) { }
 
   ngOnInit(): void {
-    console.log('hi')
+  }
 
+  refreshlog(){
     this.http.get(this.baseURL).subscribe((hooks : any) => {
+      const countbefore = this.contactsList.length;
+      let countafter = 0;
+
       this.contactsList = [];
       console.log(hooks)
 
@@ -30,8 +34,10 @@ export class HomeComponent implements OnInit {
         this.contactsList.push(data);
       }
       });
+      countafter = this.contactsList.length;
+      let addedCount = Math.abs(countbefore - countafter);
       //TODO add any message needed here
-      this.notifierService.notify("success", "You are awesome! I mean it!");
+      this.notifierService.notify("success", "Log refreshed with "+addedCount+" new logs!");
     })
   }
 
