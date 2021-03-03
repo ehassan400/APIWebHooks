@@ -1,21 +1,21 @@
 import pprint
 import requests
-from datetime import date
+from datetime  import datetime
 from flask import Flask
-from flask import request
+from flask_cors import CORS
+from flask import request, jsonify
 from flask import abort
 
 app = Flask(__name__)
+CORS(app)
 
-webhookInfo = {'isTriggered': False, 'date': '', 'data': None}
+webhookLog = []
 
 @app.route('/webhook', methods=['POST'])
 def webhook():
     if request.method == 'POST':
         pprint.pprint(request.json)
-        webhookInfo['isTriggered'] = True
-        webhookInfo['date'] = date.today()
-        webhookInfo['data'] = request.json
+        webhookLog.append({'isTriggered': True, 'date': datetime.now().strftime("%b %d %Y %H:%M:%S"), 'data': request.json})
         return ('success', 200)
     else:
         abort(400)
@@ -24,7 +24,7 @@ def webhook():
 @app.route('/webhook', methods=['Get'])
 def webhook_get():
     if request.method == 'GET':
-       return jsonify(webhookInfo)
+       return jsonify(webhookLog)
     else:
         abort(400)
 

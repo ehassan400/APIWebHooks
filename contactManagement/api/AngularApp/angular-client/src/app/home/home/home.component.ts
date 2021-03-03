@@ -64,6 +64,7 @@ export class HomeComponent implements OnInit {
 
   updateContact(contact: any) {
     contact.isEdit = true;
+    contact.editName=contact.name
     this.cd.markForCheck();
   }
 

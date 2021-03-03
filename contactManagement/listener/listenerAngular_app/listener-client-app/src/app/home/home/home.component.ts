@@ -8,21 +8,26 @@ import { HttpClient } from '@angular/common/http';
 })
 export class HomeComponent implements OnInit {
 
-  baseURL = 'http://localhost:8005/api/v1/org/1684/contacts';
+  baseURL = 'http://localhost:8005/webhook';
   contactsList : any = [];
   constructor(private http: HttpClient) { }
 
   ngOnInit(): void {
-    this.http.get(this.baseURL+ "/webhook").subscribe((data : any) => {
+    this.http.get(this.baseURL).subscribe((hooks : any) => {
       this.contactsList = [];
-      data.forEach((element: any) => {
-        this.contactsList.push(element);
+      console.log(hooks)
+
+      hooks.forEach((data: any) => {
+        if(data.isTriggered)
+      {
+        if(data.data.action == 'oncreate') data.data.action = 'Create Contact'
+        if(data.data.action == 'onupdate') data.data.action = 'Update Contact'
+        if(data.data.action == 'ondelete') data.data.action = 'Delete Contact'
+
+        this.contactsList.push(data);
+      }
       });
     })
-  }
-
-  listen(){
-
   }
 
 }

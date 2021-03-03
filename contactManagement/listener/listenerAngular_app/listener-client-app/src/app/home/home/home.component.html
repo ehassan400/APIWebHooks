@@ -1,16 +1,20 @@
 <div class="content-table">
-<h2>Listener Contact List</h2>
+<h2>Listener Contact List Webhook log</h2>
 <table class="table">
   <thead>
     <tr>
         <th scope="col">Name</th>
         <th scope="col">Email</th>
+        <th scope="col">Action</th>
+        <th scope="col">Date/Time Triggered</th>
     </tr>
   </thead>
   <tbody>
     <tr *ngFor="let contact of contactsList">
-      <td>{{contact.name}}</td>
-      <td >{{contact.email}}</td>
+      <td>{{contact.data.data.name}}</td>
+      <td >{{contact.data.data.email}}</td>
+      <td >{{contact.data.action}}</td>
+      <td >{{contact.date}}</td>
     </tr>
   </tbody>
 </table>

@@ -92,7 +92,9 @@ def notify(action, data):
         listeners = deletesubscribers_list
     
     for listener in listeners:
-        r = requests.post(listener, json=webhook_data)
+        print(listener)
+        if listener is not None:
+            r = requests.post(listener, json=webhook_data)
 
 @app.route('/api/v1/org/1684/contacts/webhookTest', methods=['POST'])
 def test_hooks():
