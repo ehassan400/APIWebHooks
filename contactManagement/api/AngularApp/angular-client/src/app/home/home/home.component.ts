@@ -1,5 +1,6 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { NotifierService } from 'angular-notifier';
 
 @Component({
   selector: 'app-home',
@@ -13,7 +14,7 @@ export class HomeComponent implements OnInit {
   newContactEmail = "";
   newContactName = "";
   isCreateContact=false;
-  constructor(private http: HttpClient, private cd: ChangeDetectorRef) { }
+  constructor(private http: HttpClient, private cd: ChangeDetectorRef, private notifierService: NotifierService) { }
 
   ngOnInit(): void {
     this.http.get(this.baseURL+ "/all").subscribe((data : any) => {
@@ -37,6 +38,7 @@ export class HomeComponent implements OnInit {
       data.forEach((element: any) => {
         this.contactsList.push(element);
       });
+      this.notifierService.notify("success", "Contact Created!");
     })
   }
 
@@ -59,6 +61,7 @@ export class HomeComponent implements OnInit {
       data.forEach((element: any) => {
         this.contactsList.push(element);
       });
+      this.notifierService.notify("success", "Contact Deleted!");
     })
   }
 
@@ -77,6 +80,7 @@ export class HomeComponent implements OnInit {
       data.forEach((element: any) => {
         this.contactsList.push(element);
       });
+      this.notifierService.notify("success", "Contact Updated!");
     })
   }
 
