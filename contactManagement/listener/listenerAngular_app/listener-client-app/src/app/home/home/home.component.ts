@@ -8,17 +8,21 @@ import { HttpClient } from '@angular/common/http';
 })
 export class HomeComponent implements OnInit {
 
-  baseURL = 'http://localhost:5008/api/v1/org/1684/contacts';
+  baseURL = 'http://localhost:8005/api/v1/org/1684/contacts';
   contactsList : any = [];
   constructor(private http: HttpClient) { }
 
   ngOnInit(): void {
-    this.http.get(this.baseURL+ "/all").subscribe((data : any) => {
+    this.http.get(this.baseURL+ "/webhook").subscribe((data : any) => {
       this.contactsList = [];
       data.forEach((element: any) => {
         this.contactsList.push(element);
       });
     })
+  }
+
+  listen(){
+
   }
 
 }

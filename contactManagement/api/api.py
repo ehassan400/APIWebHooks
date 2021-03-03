@@ -6,7 +6,9 @@ import requests
 
 app = flask.Flask(__name__)
 CORS(app)
+
 app.config["DEBUG"] = True
+app.config['CORS_HEADERS'] = 'Content-Type'
 
 # Create some test data for our catalog in the form of a list of dictionaries.
 contacts = [
@@ -44,12 +46,13 @@ def api_update_contact():
     for contact in contacts:
         print(contact['email'])
         if contact['email'] == record['email']:
-            print("hit")
-            contact = record
+            print('hit')
+            contact['name'] = record['name']
+            contact['email'] = record['email']
             notify('onupdate', contact)
     return jsonify(contacts)
 
-@app.route('/api/v1/org/1684/contacts', methods=['DELETE'])
+@app.route('/api/v1/org/1684/contacts/delete', methods=['POST'])
 def api_delete_contact():
     record = request.json
     for contact in contacts:

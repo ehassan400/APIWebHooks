@@ -1,21 +1,50 @@
-<p>Contacts list</p>
-
-
+  <div class="content-table">
+  
+  <h2>Contacts</h2>
+<table class="table">
+  <thead>
+    <tr>
+        <th scope="col">Name</th>
+        <th scope="col">Email</th>
+        <th scope="col">Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let contact of contactsList">
+      <td *ngIf="contact.isEdit == undefined || contact.isEdit != true">{{contact.name}}</td>
+      <td *ngIf="contact.isEdit != undefined && contact.isEdit == true">
+          <input type="text" class="form-control" [value]="contact.name" (change)="changeContactName($event, contact)"/>
+      </td>
+      <td >{{contact.email}}</td>
+      <td>
+          <button *ngIf="contact.isEdit == undefined || contact.isEdit != true" class="btn btn-default" (click)="updateContact(contact)">Edit</button>
+          <button *ngIf="contact.isEdit != undefined && contact.isEdit == true" class="btn btn-default" (click)="saveContact($event, contact)">Save</button>
+          /
+        <button class="btn btn-default" (click)="deleteContact(contact)">Delete</button></td>
+    </tr>
+  </tbody>
+</table>
+<br/>
+<button class="btn btn-danger" (click)=createCont()>Create Contact</button>
+<br/>
+<div *ngIf="isCreateContact">
+    <br/>
 <div class="row">
-    <div class="col-sm-4">Name</div>
-    <div class="col-sm-6">Email</div>
-    <div class="col-sm-2">Action</div>
+    <div class="col-sm-6">
+    <input type="text" class="form-control" placeholder="Contact name" [value]="newContactName" (blur)="newContactNameUpdate($event)"/>
 </div>
-<div *ngFor="let contact of contactsList">
-    <div class="row">
-        <div class="col-sm-4">{{contact.name}}</div>
-        <div class="col-sm-6">{{contact.email}}</div>
-        <div class="col-sm-2">edit/delete</div>
-    </div>
+</div>
+<br/>
+<div class="row">
+    <div class="col-sm-6">
+    <input type="text" class="form-control" placeholder="Contact email" [value]="newContactEmail" (blur)="newContactemailUpdate($event)"/>
+</div>
+</div>
+<button class="btn btn-danger" (click)="saveContactCreate()">Save Contact</button>
+</div>
+<br/>
 </div>
 
-<br/>
-<br/>
-<br/>
+
 
 

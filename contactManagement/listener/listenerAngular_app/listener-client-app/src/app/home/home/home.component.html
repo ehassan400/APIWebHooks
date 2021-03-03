@@ -1,21 +1,22 @@
-<p>Contacts list</p>
+<div class="content-table">
+<h2>Listener Contact List</h2>
+<table class="table">
+  <thead>
+    <tr>
+        <th scope="col">Name</th>
+        <th scope="col">Email</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let contact of contactsList">
+      <td>{{contact.name}}</td>
+      <td >{{contact.email}}</td>
+    </tr>
+  </tbody>
+</table>
 
-
-<div class="row">
-    <div class="col-sm-4">Name</div>
-    <div class="col-sm-6">Email</div>
-    <div class="col-sm-2">Action</div>
+<br/>
+<br/>
+<br/>
 </div>
-<div *ngFor="let contact of contactsList">
-    <div class="row">
-        <div class="col-sm-4">{{contact.name}}</div>
-        <div class="col-sm-6">{{contact.email}}</div>
-        <div class="col-sm-2">edit/delete</div>
-    </div>
-</div>
-
-<br/>
-<br/>
-<br/>
-
 
