@@ -15,7 +15,10 @@ webhookLog = []
 def webhook():
     if request.method == 'POST':
         pprint.pprint(request.json)
-        webhookLog.append({'isTriggered': True, 'date': datetime.now().strftime("%b %d %Y %H:%M:%S"), 'data': request.json})
+        if type(request.json) is str:
+            pass
+        else:
+            webhookLog.append({'isTriggered': True, 'date': datetime.now().strftime("%b %d %Y %H:%M:%S"), 'data': request.json})
         return ('success', 200)
     else:
         abort(400)
